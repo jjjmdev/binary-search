@@ -260,6 +260,22 @@ function depth(node, { root }) {
 	return count
 }
 
+function isBalanced(root) {
+	const leftHeight = height(root.left)
+	const rightHeight = height(root.right)
+	const diff = Math.abs(leftHeight - rightHeight)
+	return diff < 2 ? true : false
+}
+
+function rebalance(tree) {
+	if (isBalanced(tree.root)) return // Already balanced
+
+	const dataArray = levelOrder(tree.root)
+	tree.root = buildTree(dataArray)
+
+	return tree.root
+}
+
 // Driver function
 function driver() {
 	const bsTree = new Tree([50])
@@ -287,6 +303,15 @@ function driver() {
 	console.log("Postorder ", postorder(root))
 	console.log("Height ", height(root))
 	console.log("Depth ", depth(70, bsTree))
+	console.log("Balanced? ", isBalanced(bsTree.root))
+	root = insert(root, 81)
+	root = insert(root, 82)
+	root = insert(root, 83)
+	root = insert(root, 84)
+	prettyPrint(bsTree.root)
+	console.log("Balanced? ", isBalanced(bsTree.root))
+	console.log("Rebalance", rebalance(bsTree))
+	prettyPrint(bsTree.root)
 }
 
 driver()
