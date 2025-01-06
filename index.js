@@ -139,6 +139,23 @@ function find(root, value) {
 	return root
 }
 
+function levelOrder(root, callback) {
+	if (!callback) throw new Error("Please provide a callback function")
+
+	// Initialize a queue
+	const queue = [root]
+	let current = root
+
+	while (queue.length > 0) {
+		current = queue.shift() // First In First Out
+		// Execute callback function passing in current item from queue
+		callback(current)
+		// Add next nodes to queue
+		if (current.left) queue.push(current.left)
+		if (current.right) queue.push(current.right)
+	}
+}
+
 function inorder(root) {
 	if (root !== null) {
 		inorder(root.left)
@@ -161,9 +178,12 @@ function driver() {
 	// prettyPrint(root)
 
 	const newRoot = delIterative(root, 50)
-	prettyPrint(newRoot)
+	// prettyPrint(newRoot)
 
-	console.log(find(newRoot, 30))
+	// console.log(find(newRoot, 30))
+	levelOrder(newRoot, (current) => {
+		console.log(current)
+	})
 }
 
 driver()
