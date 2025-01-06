@@ -231,6 +231,16 @@ function postorder(root, callback) {
 	return results
 }
 
+function height(node) {
+	if (node === null) return -1
+
+	const left = height(node.left) + 1
+	const right = height(node.right) + 1
+
+	console.log("left:", left, "right:", right)
+	return Math.max(left, right)
+}
+
 // Driver function
 function driver() {
 	const bsTree = new Tree([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324])
@@ -257,6 +267,7 @@ function driver() {
 	console.log("Inorder ", inorder(root))
 	console.log("Preorder ", preorder(root))
 	console.log("Postorder ", postorder(root))
+	console.log("Height ", height(root))
 }
 
 driver()
