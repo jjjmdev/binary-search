@@ -237,7 +237,6 @@ function height(node) {
 	const left = height(node.left) + 1
 	const right = height(node.right) + 1
 
-	console.log("left:", left, "right:", right)
 	return Math.max(left, right)
 }
 
@@ -292,6 +291,7 @@ function driver() {
 	// prettyPrint(newRoot)
 
 	// console.log(find(newRoot, 30))
+	console.log("Balanced? ", isBalanced(bsTree.root))
 	console.log(
 		"Level Order ",
 		levelOrder(root, (data) => {
@@ -303,15 +303,27 @@ function driver() {
 	console.log("Postorder ", postorder(root))
 	console.log("Height ", height(root))
 	console.log("Depth ", depth(70, bsTree))
-	console.log("Balanced? ", isBalanced(bsTree.root))
 	root = insert(root, 81)
 	root = insert(root, 82)
 	root = insert(root, 83)
 	root = insert(root, 84)
 	prettyPrint(bsTree.root)
 	console.log("Balanced? ", isBalanced(bsTree.root))
-	console.log("Rebalance", rebalance(bsTree))
+	console.log("Rebalance")
+	rebalance(bsTree)
 	prettyPrint(bsTree.root)
+	console.log("Balanced? ", isBalanced(bsTree.root))
+	console.log(
+		"Level Order ",
+		levelOrder(root, (data) => {
+			return data
+		})
+	)
+	console.log("Inorder ", inorder(root))
+	console.log("Preorder ", preorder(root))
+	console.log("Postorder ", postorder(root))
+	console.log("Height ", height(root))
+	console.log("Depth ", depth(70, bsTree))
 }
 
 driver()
