@@ -126,6 +126,19 @@ function delIterative(root, data) {
 	return root
 }
 
+function find(root, value) {
+	while (root !== null) {
+		if (value < root.data) {
+			root = root.left
+		} else if (value > root.data) {
+			root = root.right
+		} else {
+			return root
+		}
+	}
+	return root
+}
+
 function inorder(root) {
 	if (root !== null) {
 		inorder(root.left)
@@ -149,6 +162,8 @@ function driver() {
 
 	const newRoot = delIterative(root, 50)
 	prettyPrint(newRoot)
+
+	console.log(find(newRoot, 30))
 }
 
 driver()
