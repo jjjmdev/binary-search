@@ -241,18 +241,36 @@ function height(node) {
 	return Math.max(left, right)
 }
 
+function depth(node, { root }) {
+	if (node === null || node === root.data) return 0
+
+	let count = 0
+	let current = root
+
+	while (current !== null && current.data !== node) {
+		count++
+		if (current.data > node) {
+			current = current.left
+		} else if (current.data < node) {
+			current = current.right
+		}
+	}
+
+	if (!current) return null
+	return count
+}
+
 // Driver function
 function driver() {
-	const bsTree = new Tree([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324])
-	let root = new Node(50)
+	const bsTree = new Tree([50])
+	let root = bsTree.root
 	root = insert(root, 30)
 	root = insert(root, 20)
 	root = insert(root, 40)
 	root = insert(root, 70)
 	root = insert(root, 60)
 	root = insert(root, 80)
-	// prettyPrint(bsTree.root)
-	prettyPrint(root)
+	prettyPrint(bsTree.root)
 
 	// const newRoot = delIterative(root, 50)
 	// prettyPrint(newRoot)
@@ -268,6 +286,7 @@ function driver() {
 	console.log("Preorder ", preorder(root))
 	console.log("Postorder ", postorder(root))
 	console.log("Height ", height(root))
+	console.log("Depth ", depth(70, bsTree))
 }
 
 driver()
