@@ -59,5 +59,96 @@ const prettyPrint = (node, prefix = "", isLeft = true) => {
 	}
 }
 
-const bsTree = new Tree([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324])
-prettyPrint(bsTree.root)
+// A utility function to insert a new
+// node with the given data
+function insert(root, data) {
+	if (root === null) return new Node(data)
+
+	// Duplicates not allowed
+	if (root.data === data) return root
+
+	if (data < root.data) root.left = insert(root.left, data)
+	else if (data > root.data) root.right = insert(root.right, data)
+
+	return root
+}
+
+function delIterative(root, data) {
+	let curr = root
+	let prev = null
+
+	// Check if the data is actually present in the BST
+	// The variable prev points to the parent of the data
+	// to be deleted
+	while (curr !== null && curr.data !== data) {
+		prev = curr
+
+		if (data < curr.data) {
+			curr = curr.left
+		} else {
+			curr = curr.right
+		}
+	}
+
+	// data not present
+	if (curr === null) return root
+
+	// Check if the node to be deleted has at most one child
+	if (curr.left === null || curr.right === null) {
+		let newCurr = curr.left === null ? curr.right : curr.left
+
+		// Check if the node to be deleted is the root
+		if (prev === null) return newCurr
+
+		// Check if the node to be deleted is prev's left or
+		// right child and then replace this with newCurr
+		if (curr === prev.left) {
+			prev.left = newCurr
+		} else {
+			prev.right = newCurr
+		}
+	} else {
+		// Node to be deleted has two children
+		let p = null
+		let temp = curr.right
+
+		while (temp.left !== null) {
+			p = temp
+			temp = temp.left
+		}
+
+		if (p !== null) p.left = temp.right
+		else curr.right = temp.right
+
+		curr.data = temp.data
+	}
+
+	return root
+}
+
+function inorder(root) {
+	if (root !== null) {
+		inorder(root.left)
+		console.log(root.data + " ")
+		inorder(root.right)
+	}
+}
+
+// Driver function
+function driver() {
+	const bsTree = new Tree([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324])
+	let root = new Node(50)
+	root = insert(root, 30)
+	root = insert(root, 20)
+	root = insert(root, 40)
+	root = insert(root, 70)
+	root = insert(root, 60)
+	root = insert(root, 80)
+	// prettyPrint(bsTree.root)
+	// prettyPrint(root)
+
+	const newRoot = delIterative(root, 50)
+	prettyPrint(newRoot)
+}
+
+driver()
