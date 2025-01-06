@@ -140,8 +140,7 @@ function find(root, value) {
 }
 
 function levelOrder(root, callback) {
-	if (!callback) throw new Error("Please provide a callback function")
-
+	let results = []
 	// Initialize a queue
 	const queue = [root]
 	let current = root
@@ -149,19 +148,87 @@ function levelOrder(root, callback) {
 	while (queue.length > 0) {
 		current = queue.shift() // First In First Out
 		// Execute callback function passing in current item from queue
-		callback(current)
+		if (callback) callback(current)
 		// Add next nodes to queue
+		results.push(current.data)
 		if (current.left) queue.push(current.left)
 		if (current.right) queue.push(current.right)
 	}
+
+	return results
 }
 
-function inorder(root) {
-	if (root !== null) {
-		inorder(root.left)
-		console.log(root.data + " ")
-		inorder(root.right)
+function inorder(root, callback) {
+	const results = []
+	if (root === null) return null
+
+	// Initialize a stack
+	const stack = []
+	let current = root
+
+	while (current !== null || stack.length > 0) {
+		// Add root to stack & get things moving
+		if (current !== null) {
+			stack.push(current)
+			current = current.left
+		} else {
+			// Handling top element of the stack
+			current = stack.pop()
+			results.push(current.data)
+			// If a callback was provided, call it here
+			if (callback) callback(current)
+
+			current = current.right
+		}
 	}
+
+	return results
+}
+
+function preorder(root, callback) {
+	const results = []
+	if (root === null) return null
+
+	// Initialize a stack
+	const stack = [root]
+
+	while (stack.length > 0) {
+		// Handle top element of the stack
+		const current = stack.pop()
+		if (callback) callback(current)
+
+		// Add its data to results
+		results.push(current.data)
+
+		// Add right child to stack
+		if (current.right) stack.push(current.right)
+		// Add left child to stack
+		if (current.left) stack.push(current.left)
+	}
+
+	return results
+}
+
+function postorder(root, callback) {
+	const results = []
+	if (root === null) return null
+
+	// Initialize a stack
+	const stack = [root]
+
+	while (stack.length > 0) {
+		// Handle top element of the stack
+		const current = stack.pop()
+		if (callback) callback(current)
+		results.unshift(current.data)
+
+		// Add left child to stack
+		if (current.left) stack.push(current.left)
+		// Add right child to stack
+		if (current.right) stack.push(current.right)
+	}
+
+	return results
 }
 
 // Driver function
@@ -175,15 +242,21 @@ function driver() {
 	root = insert(root, 60)
 	root = insert(root, 80)
 	// prettyPrint(bsTree.root)
-	// prettyPrint(root)
+	prettyPrint(root)
 
-	const newRoot = delIterative(root, 50)
+	// const newRoot = delIterative(root, 50)
 	// prettyPrint(newRoot)
 
 	// console.log(find(newRoot, 30))
-	levelOrder(newRoot, (current) => {
-		console.log(current)
-	})
+	console.log(
+		"Level Order ",
+		levelOrder(root, (data) => {
+			return data
+		})
+	)
+	console.log("Inorder ", inorder(root))
+	console.log("Preorder ", preorder(root))
+	console.log("Postorder ", postorder(root))
 }
 
 driver()
